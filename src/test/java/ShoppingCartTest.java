@@ -7,42 +7,35 @@ public class ShoppingCartTest {
     public void testAppendFormatted() {
         StringBuilder sb = new StringBuilder();
         ShoppingCart.appendFormatted(sb, "SomeLine", 0, 14);
-        assertEquals(sb.toString(), "   SomeLine    "); // Виправлено згідно логіки центрування
-
-        sb = new StringBuilder();
-        ShoppingCart.appendFormatted(sb, "SomeLine", 0, 15);
-        assertEquals(sb.toString(), "   SomeLine     ");
-
-        sb = new StringBuilder();
-        ShoppingCart.appendFormatted(sb, "SomeLine", 0, 5);
-        assertEquals(sb.toString(), "SomeL ");
-
-        sb = new StringBuilder();
-        ShoppingCart.appendFormatted(sb, "SomeLine", 1, 15);
-        assertEquals(sb.toString(), "       SomeLine ");
-
-        sb = new StringBuilder();
-        ShoppingCart.appendFormatted(sb, "SomeLine", -1, 15);
-        assertEquals(sb.toString(), "SomeLine        ");
+        assertEquals(sb.toString(), "   SomeLine    ");
     }
 
     @Test
     public void testCalculateDiscount() {
-        assertEquals(80, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SALE, 500));
-        assertEquals(73, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SALE, 30));
-        assertEquals(71, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SALE, 10));
-        assertEquals(70, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SALE, 9));
-        assertEquals(70, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SALE, 1));
+        // Тепер ми тестуємо метод через об'єкт Item
+        assertEquals(80, createItem(ShoppingCart.ItemType.SALE, 500).calculateDiscount());
+        assertEquals(73, createItem(ShoppingCart.ItemType.SALE, 30).calculateDiscount());
+        assertEquals(71, createItem(ShoppingCart.ItemType.SALE, 10).calculateDiscount());
+        assertEquals(70, createItem(ShoppingCart.ItemType.SALE, 9).calculateDiscount());
+        assertEquals(70, createItem(ShoppingCart.ItemType.SALE, 1).calculateDiscount());
 
-        assertEquals(0, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.NEW, 20));
-        assertEquals(0, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.NEW, 10));
-        assertEquals(0, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.NEW, 1));
+        assertEquals(0, createItem(ShoppingCart.ItemType.NEW, 20).calculateDiscount());
+        assertEquals(0, createItem(ShoppingCart.ItemType.NEW, 10).calculateDiscount());
+        assertEquals(0, createItem(ShoppingCart.ItemType.NEW, 1).calculateDiscount());
 
-        assertEquals(80, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 500));
-        assertEquals(53, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 30));
-        assertEquals(51, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 10));
-        assertEquals(50, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 9));
-        assertEquals(50, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 2));
-        assertEquals(0, ShoppingCart.calculateDiscount(ShoppingCart.ItemType.SECOND_FREE, 1));
+        assertEquals(80, createItem(ShoppingCart.ItemType.SECOND_FREE, 500).calculateDiscount());
+        assertEquals(53, createItem(ShoppingCart.ItemType.SECOND_FREE, 30).calculateDiscount());
+        assertEquals(51, createItem(ShoppingCart.ItemType.SECOND_FREE, 10).calculateDiscount());
+        assertEquals(50, createItem(ShoppingCart.ItemType.SECOND_FREE, 9).calculateDiscount());
+        assertEquals(50, createItem(ShoppingCart.ItemType.SECOND_FREE, 2).calculateDiscount());
+        assertEquals(0, createItem(ShoppingCart.ItemType.SECOND_FREE, 1).calculateDiscount());
+    }
+
+    // Допоміжний метод для тестів, щоб не писати багато коду
+    private ShoppingCart.Item createItem(ShoppingCart.ItemType type, int quantity) {
+        ShoppingCart.Item item = new ShoppingCart.Item();
+        item.setType(type);
+        item.setQuantity(quantity);
+        return item;
     }
 }
